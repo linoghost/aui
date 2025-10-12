@@ -1,5 +1,7 @@
 import java.util.Objects;
 import java.util.List;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Author implements Comparable<Author>{
     private int id;
@@ -14,7 +16,7 @@ public class Author implements Comparable<Author>{
         this.books = builder.books;
     }
 
-    private static class Builder{//jak ktos nie ma ide co mu podpowiada co ustawił
+    public static class Builder{//jak ktos nie ma ide co mu podpowiada co ustawił
         //jako które w konstruktorze to przydatne
         private int id;
         private String name;
@@ -95,6 +97,21 @@ public class Author implements Comparable<Author>{
     public String getSurname() {
         return surname;
     }
+
+    public void addBook(Book book) {
+        if (books == null) {
+            books = new ArrayList<>();
+        }
+        books.add(book);
+        if (book.getAuthor() != this) {
+            book.setAuthor(this); //zabezpieczenie
+        }
+    }
+    public List<Book> getBooks() {
+        return books;
+    }
+
+
 
 
 

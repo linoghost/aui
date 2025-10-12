@@ -95,4 +95,8 @@ public class Book implements Comparable<Book> {
     public Author getAuthor() {
         return author;
     }
+
+    public void setAuthor(Author author){
+        this.author=author;
+    }
 }
