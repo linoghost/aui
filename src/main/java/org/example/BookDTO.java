@@ -1,4 +1,4 @@
-public class BookDTO {//klasa "do druku"
+public class BookDTO implements Comparable<BookDTO> {//klasa "do druku"
     private int id;
     private String title;
     private String genre;
@@ -19,5 +19,10 @@ public class BookDTO {//klasa "do druku"
                 ", genre='" + genre + '\'' +
                 ", author='" + authorFullName + '\'' +
                 '}';
+    }
+
+    @Override
+    public int compareTo(BookDTO other) {
+        return this.title.compareToIgnoreCase(other.title);
     }
 }

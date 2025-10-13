@@ -1,6 +1,7 @@
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Book implements Comparable<Book> {
+public class Book implements Comparable<Book>, Serializable {
     private int id;
     private String title;
     private String genre;
@@ -99,4 +100,16 @@ public class Book implements Comparable<Book> {
     public void setAuthor(Author author){
         this.author=author;
     }
+
+    public BookDTO toDTO() {
+        String authorName;
+        if (author != null) {
+            authorName = author.getName() + " " + author.getSurname();
+        } else {
+            authorName = "unknown";
+        }
+
+        return new BookDTO(id, title, genre, authorName);
+    }
+
 }
