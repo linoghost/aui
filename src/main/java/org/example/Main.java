@@ -70,7 +70,7 @@ public class Main {
         System.out.println("\n"+"\n");
         //task 7
         System.out.println("task 7"+'\'');
-        ForkJoinPool customPool = new ForkJoinPool(6); // 3 wątki
+        ForkJoinPool customPool = new ForkJoinPool(6);
 
         try {
             customPool.submit(() -> {
@@ -89,7 +89,7 @@ public class Main {
                 });
             }).join(); // join() czeka aż wszystko się wykona
         } finally {
-            customPool.shutdown(); // ZAMKNIJ POOL po pracy!
+            customPool.shutdown();
         }
 
         System.out.println("yippiee :)");
