@@ -7,5 +7,5 @@ import java.util.UUID;
 
 @Repository
 public interface AuthorRepository extends JpaRepository<Author, UUID> {
-    // możesz tu dodać dodatkowe metody wyszukiwania autorów, jeśli chcesz
+
 }

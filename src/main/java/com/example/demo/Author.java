@@ -54,24 +54,27 @@ public class Author implements Comparable<Author>, Serializable {
 
     @Override
     public String toString(){
-        if (books == null || books.isEmpty()) {
-            return "Author{id=" + id +
-                    ", name='" + name + " " + surname + '\'' +
-                    ", books=[]}";
-        }
-
-        String titles = "";
-        for (Book b : books) {
-            titles += b.getTitle() + ", ";
-        }
-
-//        if (titles.endsWith(", ")) {
-//            titles = titles.substring(0, titles.length() - 2);
+//        if (books == null || books.isEmpty()) {
+//            return "Author{id=" + id +
+//                    ", name='" + name + " " + surname + '\'' +
+//                    ", books=[]}";
 //        }
+//
+//        String titles = "";
+//        for (Book b : books) {
+//            titles += b.getTitle() + ", ";
+//        }
+//
+////        if (titles.endsWith(", ")) {
+////            titles = titles.substring(0, titles.length() - 2);
+////        }
+//
+//        return "Author{id=" + id +
+//                ", Name: '" + name + " " + surname + '\'' +
+//                ", Books: [" + titles + "]}";
 
         return "Author{id=" + id +
-                ", Name: '" + name + " " + surname + '\'' +
-                ", Books: [" + titles + "]}";
+                ", Name: '" + name + " " + surname;
     }
 
     public UUID getId() {
