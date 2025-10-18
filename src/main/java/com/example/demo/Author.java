@@ -1,50 +1,37 @@
-import java.io.Serializable;
-import java.util.Objects;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Arrays;
+package com.example.demo;
 
+import jakarta.persistence.*;
+
+import java.io.Serializable;
+import java.util.*;
+
+@Entity
+@Table(name="authors")
 public class Author implements Comparable<Author>, Serializable {
-    private int id;
+
+    @Id
+    private UUID id;
+    @Column(name="name")
     private String name;
+    @Column(name="surname")
     private String surname;
+
+    //relacja 1:n bo autor ma wiele książek
+    @OneToMany(mappedBy="author", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+
+    //fetchtype lazy żeby nam nie fetchowalo od razu po załadowaniu wszystkich ksiazek,
+    //tak jak było w instrukcji
     private List<Book> books;
 
-    private Author(Builder builder){
-        this.id= builder.id;;
-        this.name = builder.name;
-        this.surname = builder.surname;
-        this.books = builder.books;
+    public Author(){}
+
+    public Author(UUID id, String name, String surname, List<Book> books){
+        this.id = id;
+        this.name = name;
+        this.surname = surname;
+        this.books = books;
     }
-
-    public static class Builder{//jak ktos nie ma ide co mu podpowiada co ustawił
-        //jako które w konstruktorze to przydatne
-        private int id;
-        private String name;
-        private String surname;
-        private List<Book> books;
-
-        public Builder id(int id){
-            this.id=id;
-            return this; //do łączenia metod tak jakby
-        }
-        public Builder name(String name){
-            this.name=name;
-            return this;
-        }
-        public Builder surname(String surname){
-            this.surname=surname;
-            return this;
-        }
-        public Builder books(List<Book> books){
-            this.books=books;
-            return this;
-        }
-
-        public Author build(){
-            return new Author(this);
-        }
-    }
+    //konstruktor just in case gdyby miał się przydać do testów :)
 
     @Override
     public boolean equals(Object o){
@@ -87,16 +74,36 @@ public class Author implements Comparable<Author>, Serializable {
                 ", Books: [" + titles + "]}";
     }
 
-    public int getId() {
+    public UUID getId() {
         return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
     }
 
     public String getName() {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getSurname() {
         return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public List<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(List<Book> books) {
+        this.books = books;
     }
 
     public void addBook(Book book) {
@@ -108,9 +115,7 @@ public class Author implements Comparable<Author>, Serializable {
             book.setAuthor(this); //zabezpieczenie
         }
     }
-    public List<Book> getBooks() {
-        return books;
-    }
+
 
 
 
