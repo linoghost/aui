@@ -4,8 +4,10 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Scanner;
 import java.util.UUID;
+import org.springframework.core.annotation.Order;
 
 @Component
+@Order(2)
 public class ConsoleRunner implements CommandLineRunner {
 
     private final AuthorService authorService;

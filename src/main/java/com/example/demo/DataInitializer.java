@@ -1,10 +1,13 @@
 package com.example.demo;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.annotation.Order;
 import java.util.*;
 
 
 @Component
+@Order(1)
 public class DataInitializer implements CommandLineRunner {
 
     private final AuthorService authorService;
