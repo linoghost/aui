@@ -27,7 +27,7 @@ public class BookController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/authors/{authorId}/books")
     public ResponseEntity<?> getBooksByAuthor(@PathVariable UUID authorId) {
         //pathvariable bierze wartość z naszego id i zamienia ją na uuid
         //responseentity jest stricte na restapi zeby bylo nam łatwo zwracac odpowiedzi (np 200 OK i reszta danych,
