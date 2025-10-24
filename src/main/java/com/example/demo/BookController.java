@@ -1,7 +1,6 @@
 package com.example.demo;
 
 import com.example.demo.*;
-import com.example.demo.dto.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,7 +27,7 @@ public class BookController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("/authors/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> getBooksByAuthor(@PathVariable UUID authorId) {
         //pathvariable bierze wartość z naszego id i zamienia ją na uuid
         //responseentity jest stricte na restapi zeby bylo nam łatwo zwracac odpowiedzi (np 200 OK i reszta danych,

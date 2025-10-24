@@ -15,7 +15,7 @@ public class AuthorReadDTO { //chcemy pełnego info, co napisał etc (mam tu tro
         this.id = id;
         this.name = name;
         this.surname = surname;
-        this.books = books;
+        this.booktitles = books;
     }
 
     public AuthorReadDTO(){}
