@@ -5,6 +5,13 @@ public class AuthorCreateUpdateDTO {
     private String surname;
     //id bedzie generowane
 
+    public AuthorCreateUpdateDTO(String name, String surname) {
+        this.name = name;
+        this.surname = surname;
+    }
+
+    public AuthorCreateUpdateDTO(){}
+
 
     public void setName(String name) {
         this.name = name;

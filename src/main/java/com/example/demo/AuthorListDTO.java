@@ -6,6 +6,12 @@ public class AuthorListDTO {
     private UUID id;
     private String fullName;
 
+    public AuthorListDTO(UUID id, String fullName) {
+        this.id = id;
+        this.fullName = fullName;
+    }
+    public AuthorListDTO(){}
+
     public void setId(UUID id) {
         this.id = id;
     }

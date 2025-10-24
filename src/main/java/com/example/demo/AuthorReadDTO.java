@@ -2,13 +2,23 @@ package com.example.demo;
 
 import java.util.*;
 
-public class AuthorReadDTO {
+public class AuthorReadDTO { //chcemy pełnego info, co napisał etc (mam tu troche
+    //za mało danych żeby to odpowiednio przedstawić ale tu by było wszystko jak wiek,
+    //nwm zarobki, a w list byłoby tylko jego nazwisko np)
 
     private UUID id;
     private String name;
     private String surname;
 
     private  List<String> booktitles;
+    public AuthorReadDTO(UUID id, String name, String surname, List<String> books) {
+        this.id = id;
+        this.name = name;
+        this.surname = surname;
+        this.books = books;
+    }
+
+    public AuthorReadDTO(){}
 
     public void setId(UUID id) {
         this.id = id;

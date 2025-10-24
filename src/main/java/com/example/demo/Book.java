@@ -8,7 +8,7 @@ import java.util.*;
 @Entity
 @Table(name="books")
 public class Book implements Comparable<Book>, Serializable {
-
+//element kategorii
     @Id
     private UUID id;
     @Column(name="title")
