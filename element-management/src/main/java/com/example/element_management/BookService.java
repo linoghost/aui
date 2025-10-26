@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.element_management;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.UUID;

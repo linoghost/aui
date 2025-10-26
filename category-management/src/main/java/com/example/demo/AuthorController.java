@@ -11,11 +11,9 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/authors") //taki define ścieżki, żeby nie pisać za każdym razem całej
 public class AuthorController {
     private final AuthorService authorService;
-    private final BookService bookService;
 
-    public AuthorController(AuthorService authorService, BookService bookService){
+    public AuthorController(AuthorService authorService){
         this.authorService=authorService;
-        this.bookService=bookService;
     }
 
     @GetMapping
@@ -34,15 +32,12 @@ public class AuthorController {
             return ResponseEntity.notFound().build();
         }
 
-        List<String> bookTitles = author.getBooks().stream()
-                .map(Book::getTitle)
-                .toList();
+        
 
         AuthorReadDTO dto = new AuthorReadDTO(
                 author.getId(),
                 author.getName(),
-                author.getSurname(),
-                bookTitles
+                author.getSurname()
         );
 
         return ResponseEntity.ok(dto);
@@ -51,11 +46,11 @@ public class AuthorController {
 
     @PostMapping
     public ResponseEntity<AuthorReadDTO> createAuthor(@RequestBody AuthorCreateUpdateDTO dto) {
-        Author author = new Author(UUID.randomUUID(), dto.getName(), dto.getSurname(), new ArrayList<>());
+        Author author = new Author(UUID.randomUUID(), dto.getName(), dto.getSurname());
         authorService.save(author);
 
         return ResponseEntity.status(201).body(
-                new AuthorReadDTO(author.getId(), author.getName(), author.getSurname(), List.of())
+                new AuthorReadDTO(author.getId(), author.getName(), author.getSurname())
         );
     }
 
@@ -71,11 +66,9 @@ public class AuthorController {
         existing.setSurname(dto.getSurname());
         authorService.save(existing);
 
-        List<String> bookTitles = existing.getBooks().stream()
-                .map(Book::getTitle)
-                .toList();
+        
 
-        return ResponseEntity.ok(new AuthorReadDTO(existing.getId(), existing.getName(), existing.getSurname(), bookTitles));
+        return ResponseEntity.ok(new AuthorReadDTO(existing.getId(), existing.getName(), existing.getSurname()));
     }
 
 

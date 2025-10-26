@@ -10,12 +10,10 @@ public class AuthorReadDTO { //chcemy pełnego info, co napisał etc (mam tu tro
     private String name;
     private String surname;
 
-    private  List<String> booktitles;
-    public AuthorReadDTO(UUID id, String name, String surname, List<String> books) {
+    public AuthorReadDTO(UUID id, String name, String surname) {
         this.id = id;
         this.name = name;
         this.surname = surname;
-        this.booktitles = books;
     }
 
     public AuthorReadDTO(){}
@@ -32,9 +30,6 @@ public class AuthorReadDTO { //chcemy pełnego info, co napisał etc (mam tu tro
         this.name = name;
     }
 
-    public void setBooktitles(List<String> booktitles) {
-        this.booktitles = booktitles;
-    }
 
     public String getSurname() {
         return surname;
@@ -44,9 +39,6 @@ public class AuthorReadDTO { //chcemy pełnego info, co napisał etc (mam tu tro
         return name;
     }
 
-    public List<String> getBooktitles() {
-        return booktitles;
-    }
 
     public UUID getId() {
         return id;

@@ -2,7 +2,6 @@ package com.example.demo;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.UUID;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class AuthorService {
@@ -38,12 +37,7 @@ public class AuthorService {
     public void deleteById(UUID id) {
         authorRepository.deleteById(id);
     }
-    @Transactional
-    public void addBookToAuthor(UUID authorId, Book book) {
-        Author author = authorRepository.findById(authorId).orElseThrow();
-        author.addBook(book);
-        authorRepository.save(author); // zapisze też książkę przez cascade
-    }
+
 
 
 }

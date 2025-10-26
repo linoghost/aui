@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.element_management;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import org.springframework.boot.CommandLineRunner;

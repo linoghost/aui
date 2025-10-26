@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.element_management;
 
 public class BookCreateUpdateDTO {
     private String title;

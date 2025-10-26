@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.element_management;
 
 import jakarta.persistence.*;
 

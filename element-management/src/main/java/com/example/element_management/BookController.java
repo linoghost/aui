@@ -1,6 +1,6 @@
-package com.example.demo;
+package com.example.element_management;
 
-import com.example.demo.*;
+import com.example.element_management.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

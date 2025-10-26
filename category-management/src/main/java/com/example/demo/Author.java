@@ -17,19 +17,17 @@ public class Author implements Comparable<Author>, Serializable {
     private String surname;
 
     //relacja 1:n bo autor ma wiele książek
-    @OneToMany(mappedBy="author", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+   // @OneToMany(mappedBy="author", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 
     //fetchtype lazy żeby nam nie fetchowalo od razu po załadowaniu wszystkich ksiazek,
     //tak jak było w instrukcji
-    private List<Book> books;
 
     public Author(){}
 
-    public Author(UUID id, String name, String surname, List<Book> books){
+    public Author(UUID id, String name, String surname){
         this.id = id;
         this.name = name;
         this.surname = surname;
-        this.books = books;
     }
     //konstruktor just in case gdyby miał się przydać do testów :)
 
@@ -100,29 +98,5 @@ public class Author implements Comparable<Author>, Serializable {
     public void setSurname(String surname) {
         this.surname = surname;
     }
-
-    public List<Book> getBooks() {
-        return books;
-    }
-
-    public void setBooks(List<Book> books) {
-        this.books = books;
-    }
-
-    public void addBook(Book book) {
-        if (books == null) {
-            books = new ArrayList<>();
-        }
-        books.add(book);
-        if (book.getAuthor() != this) {
-            book.setAuthor(this); //zabezpieczenie
-        }
-    }
-
-
-
-
-
-
 
 }
