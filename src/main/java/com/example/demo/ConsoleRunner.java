@@ -111,6 +111,18 @@ public class ConsoleRunner implements CommandLineRunner {
                     books = bookService.findByAuthor(author);
                     books.forEach(boook -> System.out.println(boook.getTitle()));
                     break;
+                
+                case "find_king":
+                    author = authorService.findbySurname("King");
+                    // if (author==null){
+                    //     System.out.println("mordo no cos nie tak poszlo1!!!!!");
+                    //     break;
+                    // }
+                    
+                    books = bookService.findByAuthor(author);
+                    System.out.println(author.getName() + " " + author.getSurname());
+                    books.forEach(boook -> System.out.println(boook.getTitle()));
+                    break;
 
 
                 case "exit":

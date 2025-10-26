@@ -27,6 +27,14 @@ public class AuthorService {
         return authorRepository.save(author);
     }
 
+    public Author findbySurname(String surname){
+        Author author = authorRepository.findBySurname(surname);
+        if (author!=null){
+            return author;
+        }
+        return null;
+    }
+
     public void deleteById(UUID id) {
         authorRepository.deleteById(id);
     }

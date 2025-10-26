@@ -27,12 +27,12 @@ public class BookController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("/authors/{authorId}/books")
-    public ResponseEntity<?> getBooksByAuthor(@PathVariable UUID authorId) {
+    @GetMapping("/authors/{surname}/books")
+    public ResponseEntity<?> getBooksByAuthor(@PathVariable String surname) {
         //pathvariable bierze wartość z naszego id i zamienia ją na uuid
         //responseentity jest stricte na restapi zeby bylo nam łatwo zwracac odpowiedzi (np 200 OK i reszta danych,
         //albo błędy. bez tego CHYBA może się wywalić jak coś pójdzie nie tak
-        Author author = authorService.findById(authorId);
+        Author author = authorService.findbySurname(surname);
         if (author == null) {
             return ResponseEntity.notFound().build();
         }
@@ -50,29 +50,28 @@ public class BookController {
 
 
     }
-    @PostMapping("/authors/{authorId}/books")
-    public ResponseEntity<?> addBook(@PathVariable UUID authorId, @RequestBody BookCreateUpdateDTO dto) {
-        Author author = authorService.findById(authorId);
+    @PostMapping("/authors/{surname}/books")
+    public ResponseEntity<?> addBook(@PathVariable String surname, @RequestBody BookCreateUpdateDTO dto) {
+        Author author = authorService.findbySurname(surname);
         if (author == null) {
             return ResponseEntity.badRequest().body("Author not found");
         }
-
+        
         Book newBook = new Book(UUID.randomUUID(), dto.getTitle(), dto.getGenre(), author);
-        author.addBook(newBook);
-        bookService.save(newBook);
+        authorService.addBookToAuthor(author.getId(), newBook);
 
         return ResponseEntity.status(201).body(
                 new BookReadDTO(newBook.getId(), newBook.getTitle(), newBook.getGenre(), author.getName() + " " + author.getSurname())
         );
     }
 
-    @DeleteMapping("/books/{id}")
-    public ResponseEntity<Void> deleteBook(@PathVariable UUID id) {
-        Book book = bookService.findById(id);
+    @DeleteMapping("/books/{title}")
+    public ResponseEntity<Void> deleteBook(@PathVariable String title) {
+        Book book = bookService.findByTitle(title);
         if (book == null) {
             return ResponseEntity.notFound().build();
         }
-
+        UUID id = book.getId();
         bookService.deleteById(id);
         return ResponseEntity.noContent().build();
     }

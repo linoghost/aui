@@ -8,7 +8,7 @@ Accept: application/json
 
 ###
 
-GET http://localhost:8080/api/authors/267a1480-6645-46f0-94e2-6cc061ec9d15
+GET http://localhost:8080/api/authors/King
 Accept: application/json
 ###
 
@@ -24,7 +24,7 @@ Content-Type: application/json
 ###
 
 # Update an existing author
-PUT http://localhost:8080/api/authors/267a1480-6645-46f0-94e2-6cc061ec9d15
+PUT http://localhost:8080/api/authors/Doe
 Content-Type: application/json
 
 {
@@ -35,7 +35,7 @@ Content-Type: application/json
 ###
 
 # Delete an author
-DELETE http://localhost:8080/api/authors/267a1480-6645-46f0-94e2-6cc061ec9d15
+DELETE http://localhost:8080/api/authors/Tolkien
 
 ### Books ###
 
@@ -46,13 +46,13 @@ Accept: application/json
 ###
 
 
-GET http://localhost:8080/api/authors/579818e5-2374-477b-869f-3d0fbef9b2d0/books
+GET http://localhost:8080/api/authors/Rowling/books
 Accept: application/json
 
 ###
 
 # Add a new book to an author
-POST http://localhost:8080/api/authors/579818e5-2374-477b-869f-3d0fbef9b2d0/books
+POST http://localhost:8080/api/authors/Rowling/books
 Content-Type: application/json
 
 {
@@ -63,4 +63,10 @@ Content-Type: application/json
 ###
 
 # Delete a book by ID
-DELETE http://localhost:8080/api/books/{{BOOK_ID}}
+DELETE http://localhost:8080/api/books/It
+
+
+### DELETE a book by title
+DELETE http://localhost:8080/api/books/My%20New%20Book
+Accept: application/json
+
