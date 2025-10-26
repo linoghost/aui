@@ -33,8 +33,8 @@ public class BookService {
     }
 
     // tak w razie W żeby było, skoro ma obsługiwać ig
-    public List<Book> findByAuthor(Author author) {
-        return bookRepository.findByAuthor(author);
+    public List<Book> findByAuthorID(UUID author_id) {
+        return bookRepository.findByAuthorID(author_id);
     }
 }
 

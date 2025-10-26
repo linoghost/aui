@@ -19,15 +19,15 @@ public class Book implements Comparable<Book>, Serializable {
     //relacja N:1 - wiele ksiazek do 1 autora
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="author_id")
-    private Author author;
+    private UUID author_id;
 
     public Book(){}
 
-    public Book(UUID id, String title, String genre, Author author) {
+    public Book(UUID id, String title, String genre, UUID author_id) {
         this.id = id;
         this.title = title;
         this.genre = genre;
-        this.author = author;
+        this.author_id = author_id;
     }
 
 
@@ -57,9 +57,7 @@ public class Book implements Comparable<Book>, Serializable {
     public String toString() {
         return "Book{id=" + id +
                 ", title='" + title + '\'' +
-                ", genre='" + genre + '\'' +
-                ", author='" + (author != null ? author.getName() + " " + author.getSurname() : "none") + '\'' +
-                '}';
+                ", genre='" + genre + '\'';
     }
 
 
@@ -87,12 +85,12 @@ public class Book implements Comparable<Book>, Serializable {
         this.genre = genre;
     }
 
-    public Author getAuthor() {
-        return author;
+    public UUID getAuthorID() {
+        return author_id;
     }
 
-    public void setAuthor(Author author) {
-        this.author = author;
+    public void setAuthorID(UUID author_id) {
+        this.author_id=author_id;
     }
 
 //    public BookDTO toDTO() {

@@ -11,11 +11,9 @@ import java.util.stream.Collectors;
 @RequestMapping("/api")
 public class BookController {
 
-    private final AuthorService authorService;
     private final BookService bookService;
 
-    public BookController(AuthorService authorService, BookService bookService) {
-        this.authorService = authorService;
+    public BookController(BookService bookService) {
         this.bookService = bookService;
     }
 
@@ -23,27 +21,23 @@ public class BookController {
     @GetMapping("/books")
     public List<BookListDTO> getAllBooks() {
         return bookService.findAll().stream()
-                .map(b -> new BookListDTO(b.getId(), b.getTitle(), b.getAuthor().getName() + " " + b.getAuthor().getSurname()))
+                .map(b -> new BookListDTO(b.getId(), b.getTitle()))
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("/authors/{surname}/books")
-    public ResponseEntity<?> getBooksByAuthor(@PathVariable String surname) {
+    @GetMapping("/authors/{author_id}/books")
+    public ResponseEntity<List<BookListDTO>> getBooksByAuthorID(@PathVariable UUID author_id) {
         //pathvariable bierze wartość z naszego id i zamienia ją na uuid
         //responseentity jest stricte na restapi zeby bylo nam łatwo zwracac odpowiedzi (np 200 OK i reszta danych,
         //albo błędy. bez tego CHYBA może się wywalić jak coś pójdzie nie tak
-        Author author = authorService.findbySurname(surname);
-        if (author == null) {
-            return ResponseEntity.notFound().build();
-        }
+        List<Book> books = bookService.findByAuthorID(author_id);
 
-        List<Book> books = author.getBooks();
         if (books.isEmpty()) {
             return ResponseEntity.noContent().build(); // różnica: autor istnieje, ale bez książek
         }
 
         List<BookListDTO> bookDTOs = books.stream()
-                .map(b -> new BookListDTO(b.getId(), b.getTitle(), author.getName() + " " + author.getSurname()))
+                .map(b -> new BookListDTO(b.getId(), b.getTitle()))
                 .toList();
 
         return ResponseEntity.ok(bookDTOs);
