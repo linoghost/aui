@@ -66,4 +66,20 @@ public class BookController {
         bookService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
+
+    @DeleteMapping("/books/authors/{authorId}")
+    public ResponseEntity<Void> deleteAuthor(@PathVariable UUID authorId){
+        List<Book> books = bookService.findByAuthorId(authorId);
+
+        if (books.isEmpty()) {
+            return ResponseEntity.noContent().build(); // różnica: autor istnieje, ale bez książek
+        }
+
+        UUID id;
+        for (Book book : books){
+            id=book.getId();
+            bookService.deleteById(id);
+        }
+        return ResponseEntity.noContent().build();
+    }
 }

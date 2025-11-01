@@ -37,7 +37,7 @@ Content-Type: application/json
 ###
 
 # Delete an author
-DELETE http://localhost:8081/api/authors/Tolkien
+DELETE http://localhost:8081/api/authors/Rowling
 
 ### Books ###
 

@@ -81,6 +81,8 @@ public class AuthorController {
             return ResponseEntity.notFound().build();
         }
         UUID id = author.getId();
+        webClient.delete().uri("/api/books/authors/{authorId}", id).retrieve()
+        .toBodilessEntity().block();
 
         authorService.deleteById(id);
         return ResponseEntity.noContent().build();
