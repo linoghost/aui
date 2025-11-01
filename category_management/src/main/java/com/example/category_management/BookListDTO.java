@@ -1,4 +1,4 @@
-package com.example.element_management;
+package com.example.category_management;
 
 import java.util.UUID;
 

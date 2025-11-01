@@ -6,14 +6,12 @@ public class BookReadDTO {
     private UUID id;
     private String title;
     private String genre;
-    private String authorName; // "Stephen King"
 
     public BookReadDTO() {}
-    public BookReadDTO(UUID id, String title, String genre, String authorName) {
+    public BookReadDTO(UUID id, String title, String genre) {
         this.id = id;
         this.title = title;
         this.genre = genre;
-        this.authorName = authorName;
     }
 
     public String getTitle() {
@@ -24,9 +22,6 @@ public class BookReadDTO {
         return genre;
     }
 
-    public String getAuthorName() {
-        return authorName;
-    }
 
     public UUID getId() {
         return id;
@@ -39,10 +34,6 @@ public class BookReadDTO {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public void setAuthorName(String authorName) {
-        this.authorName = authorName;
     }
 
     public void setId(UUID id) {

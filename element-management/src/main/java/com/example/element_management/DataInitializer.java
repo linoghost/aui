@@ -1,7 +1,7 @@
 package com.example.element_management;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-import org.springframework.boot.CommandLineRunner;
+import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.core.annotation.Order;
 import java.util.*;
 
@@ -10,109 +10,105 @@ import java.util.*;
 @Order(1)
 public class DataInitializer implements CommandLineRunner {
 
-    private final AuthorService authorService;
     private final BookService bookService;
+    private final WebClient webClient;
 
 
-    public DataInitializer(AuthorService authorService, BookService bookService) {
-        this.authorService = authorService;
+    public DataInitializer(BookService bookService, WebClient.Builder webClientBuilder) {
         this.bookService = bookService;
+        this.webClient = webClientBuilder.baseUrl("http://localhost:8081/authors").build();
     }
 
     @Override
     public void run(String... args) throws Exception {
-        System.out.println("yippiee!");
-        List<Author> authors = createAuthorsAndBooks();
+        List<AuthorListDTO> authors = webClient.get()
+                .uri("") // GET http://localhost:8081/authors
+                .retrieve()
+                .bodyToFlux(AuthorListDTO.class)
+                .collectList()
+                .block();
 
-        for (Author author : authors) {
-            authorService.save(author);
-            System.out.println("Saved author: " + author.getName() + " with " +
-                    (author.getBooks() != null ? author.getBooks().size() : 0) + " books");
+        if (authors == null || authors.isEmpty()) {
+            System.out.println("mamy problem, nie ma autorów");
+            return;
         }
 
-        List<Book> allBooks = bookService.findAll();
-        System.out.println("Total books in database: " + allBooks.size());
+        Map<String, UUID> authorMap = new HashMap<>();
+        //robimy associating ID z imieniem i nazwiskiem - hash bo jest najszybszy
+        for (AuthorListDTO a : authors) {
+            authorMap.put(a.getFullName(), a.getId());
+        }
 
+        List<Book> books = new ArrayList<>();
 
-        System.out.println("yippiee!");
+        books = createBooks(authorMap);
+        for (Book book : books) {
+            if (book.getAuthorID() == null) {
+                System.out.println("cos poszlo nie tak z dodawaniem id autora" + book.getTitle());
+                continue;
+            }
+
+            bookService.save(book);
+            System.out.println("zapisano " + book.getTitle());
+        }
+
+        System.out.println("yippiee! ksiazki!");
     }
 
-    // funkcja stricte żeby nie zaśmiecać run, tak jak poprzednio w mainie robilam
-    private static List<Author> createAuthorsAndBooks() {
-        Author king = new Author(UUID.randomUUID(), "Stephen", "King", new ArrayList<>());
-        Author tolkien = new Author(UUID.randomUUID(), "J.R.R.", "Tolkien", new ArrayList<>());
-        Author rowling = new Author(UUID.randomUUID(), "J.K.", "Rowling", new ArrayList<>());
-        Author orwell = new Author(UUID.randomUUID(), "George", "Orwell", new ArrayList<>());
-        Author austen = new Author(UUID.randomUUID(), "Jane", "Austen", new ArrayList<>());
-        Author herbert = new Author(UUID.randomUUID(), "Frank", "Herbert", new ArrayList<>());
+    // funkcja stricte żeby nie zaśmiecać run
+    private static List<Book> createBooks(Map<String, UUID> authorMap) {
 
+        List<Book> books = new ArrayList<>();
 
-        Book b1 = new Book(UUID.randomUUID(), "It", "Horror", king);
-        Book b2 = new Book(UUID.randomUUID(), "The Shining", "Horror", king);
-        king.addBook(b1);
-        king.addBook(b2);
+        Book b1 = new Book(UUID.randomUUID(), "It", "Horror", authorMap.get("Stephen King"));
+        books.add(b1);
+        Book b2 = new Book(UUID.randomUUID(), "The Shining", "Horror", authorMap.get("Stephen King"));
+        books.add(b2);
 
+        Book b5 = new Book(UUID.randomUUID(), "The Hobbit", "Fantasy", authorMap.get("J.R.R. Tolkien"));
+        books.add(b5);
+        Book b6 = new Book(UUID.randomUUID(), "The Lord of the Rings", "Fantasy", authorMap.get("J.R.R. Tolkien"));
+        books.add(b6);
 
-        Book b5 = new Book(UUID.randomUUID(), "The Hobbit", "Fantasy", tolkien);
-        Book b6 = new Book(UUID.randomUUID(), "The Lord of the Rings", "Fantasy", tolkien);
-        tolkien.addBook(b5);
-        tolkien.addBook(b6);
+        Book b7 = new Book(UUID.randomUUID(), "Harry Potter and the Philosopher's Stone", "Fantasy", authorMap.get("J.K. Rowling"));
+        books.add(b7);
+        Book b8 = new Book(UUID.randomUUID(), "Harry Potter and the Chamber of Secrets", "Fantasy", authorMap.get("J.K. Rowling"));
+        books.add(b8);
+        Book b9 = new Book(UUID.randomUUID(), "Harry Potter and the Prisoner of Azkaban", "Fantasy", authorMap.get("J.K. Rowling"));
+        books.add(b9);
 
+        Book b10 = new Book(UUID.randomUUID(), "1984", "Dystopian", authorMap.get("George Orwell"));
+        books.add(b10);
+        Book b11 = new Book(UUID.randomUUID(), "Animal Farm", "Political Satire", authorMap.get("George Orwell"));
+        books.add(b11);
+        Book b12 = new Book(UUID.randomUUID(), "Homage to Catalonia", "Non-fiction", authorMap.get("George Orwell"));
+        books.add(b12);
 
-        Book b7 = new Book(UUID.randomUUID(), "Harry Potter and the Philosopher's Stone", "Fantasy", rowling);
-        Book b8 = new Book(UUID.randomUUID(), "Harry Potter and the Chamber of Secrets", "Fantasy", rowling);
-        Book b9 = new Book(UUID.randomUUID(), "Harry Potter and the Prisoner of Azkaban", "Fantasy", rowling);
-        rowling.addBook(b7);
-        rowling.addBook(b8);
-        rowling.addBook(b9);
+        Book b13 = new Book(UUID.randomUUID(), "Pride and Prejudice", "Romance", authorMap.get("Jane Austen"));
+        books.add(b13);
+        Book b14 = new Book(UUID.randomUUID(), "Sense and Sensibility", "Romance", authorMap.get("Jane Austen"));
+        books.add(b14);
+        Book b15 = new Book(UUID.randomUUID(), "Emma", "Romance", authorMap.get("Jane Austen"));
+        books.add(b15);
 
+        Book b16 = new Book(UUID.randomUUID(), "Dune", "Science Fiction", authorMap.get("Frank Herbert"));
+        books.add(b16);
+        Book b17 = new Book(UUID.randomUUID(), "Dune Messiah", "Science Fiction", authorMap.get("Frank Herbert"));
+        books.add(b17);
+        Book b18 = new Book(UUID.randomUUID(), "Children of Dune", "Science Fiction", authorMap.get("Frank Herbert"));
+        books.add(b18);
 
-        Book b10 = new Book(UUID.randomUUID(), "1984", "Dystopian", orwell);
-        Book b11 = new Book(UUID.randomUUID(), "Animal Farm", "Political Satire", orwell);
-        Book b12 = new Book(UUID.randomUUID(), "Homage to Catalonia", "Non-fiction", orwell);
-        orwell.addBook(b10);
-        orwell.addBook(b11);
-        orwell.addBook(b12);
+        Book b3 = new Book(UUID.randomUUID(), "Carrie", "Horror", authorMap.get("Stephen King"));
+        books.add(b3);
+        Book b4 = new Book(UUID.randomUUID(), "The Stand", "Horror", authorMap.get("Stephen King"));
+        books.add(b4);
 
+        Book b19 = new Book(UUID.randomUUID(), "The Silmarillion", "Fantasy", authorMap.get("J.R.R. Tolkien"));
+        books.add(b19);
+        Book b20 = new Book(UUID.randomUUID(), "The Children of Húrin", "Fantasy", authorMap.get("J.R.R. Tolkien"));
+        books.add(b20);
 
-        Book b13 = new Book(UUID.randomUUID(), "Pride and Prejudice", "Romance", austen);
-        Book b14 = new Book(UUID.randomUUID(), "Sense and Sensibility", "Romance", austen);
-        Book b15 = new Book(UUID.randomUUID(), "Emma", "Romance", austen);
-        austen.addBook(b13);
-        austen.addBook(b14);
-        austen.addBook(b15);
-
-
-        Book b16 = new Book(UUID.randomUUID(), "Dune", "Science Fiction", herbert);
-        Book b17 = new Book(UUID.randomUUID(), "Dune Messiah", "Science Fiction", herbert);
-        Book b18 = new Book(UUID.randomUUID(), "Children of Dune", "Science Fiction", herbert);
-        herbert.addBook(b16);
-        herbert.addBook(b17);
-        herbert.addBook(b18);
-
-
-        Book b3 = new Book(UUID.randomUUID(), "Carrie", "Horror", king);
-        Book b4 = new Book(UUID.randomUUID(), "The Stand", "Horror", king);
-        king.addBook(b3);
-        king.addBook(b4);
-
-
-        Book b19 = new Book(UUID.randomUUID(), "The Silmarillion", "Fantasy", tolkien);
-        Book b20 = new Book(UUID.randomUUID(), "The Children of Húrin", "Fantasy", tolkien);
-        tolkien.addBook(b19);
-        tolkien.addBook(b20);
-
-
-
-        List<Author> authors = new ArrayList<>();
-        authors.add(king);
-        authors.add(tolkien);
-        authors.add(rowling);
-        authors.add(orwell);
-        authors.add(austen);
-        authors.add(herbert);
-
-        return authors;
+        return books;
     }
 
 }

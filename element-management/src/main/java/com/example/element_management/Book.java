@@ -17,8 +17,8 @@ public class Book implements Comparable<Book>, Serializable {
     private String genre;
 
     //relacja N:1 - wiele ksiazek do 1 autora
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="author_id")
+    // @ManyToOne(fetch = FetchType.LAZY)
+    @Column(name="author_id")
     private UUID author_id;
 
     public Book(){}

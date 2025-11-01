@@ -1,0 +1,74 @@
+@env=local
+### Authors ###
+#ksiazki 8082
+#autorzy 8081
+
+# Get all authors
+GET http://localhost:8081/api/authors
+Accept: application/json
+
+###
+
+#get author
+GET http://localhost:8081/api/authors/King
+Accept: application/json
+###
+
+# Create a new author
+POST http://localhost:8081/api/authors
+Content-Type: application/json
+
+{
+  "name": "John",
+  "surname": "Doe"
+}
+
+###
+
+# Update an existing author
+PUT http://localhost:8081/api/authors/Doe
+Content-Type: application/json
+
+{
+  "name": "Jane",
+  "surname": "Smith"
+}
+
+###
+
+# Delete an author
+DELETE http://localhost:8081/api/authors/Tolkien
+
+### Books ###
+
+# Get all books
+GET http://localhost:8082/api/books
+Accept: application/json
+
+###
+
+#81 bo najpierw trzeba wywolac autorow
+GET http://localhost:8081/api/authors/Rowling/books
+Accept: application/json
+
+###
+
+# Add a new book to an author
+POST http://localhost:8081/api/authors/Rowling/books
+Content-Type: application/json
+
+{
+  "title": "My New Book",
+  "genre": "Fiction"
+}
+
+###
+
+# Delete a book by title
+DELETE http://localhost:8082/api/books/It
+
+
+### DELETE a book by title
+DELETE http://localhost:8080/api/books/My%20New%20Book
+Accept: application/json
+

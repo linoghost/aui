@@ -25,8 +25,11 @@ public class BookController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("/authors/{author_id}/books")
+    @GetMapping("/books/authors/{author_id}")
     public ResponseEntity<List<BookListDTO>> getBooksByAuthorID(@PathVariable UUID author_id) {
+        //
+        //  "KONTYNUACJA" funkcji znajduje się w autorze - komunikacja miedzy portami.
+        //
         //pathvariable bierze wartość z naszego id i zamienia ją na uuid
         //responseentity jest stricte na restapi zeby bylo nam łatwo zwracac odpowiedzi (np 200 OK i reszta danych,
         //albo błędy. bez tego CHYBA może się wywalić jak coś pójdzie nie tak
@@ -41,21 +44,15 @@ public class BookController {
                 .toList();
 
         return ResponseEntity.ok(bookDTOs);
-
-
     }
-    @PostMapping("/authors/{surname}/books")
-    public ResponseEntity<?> addBook(@PathVariable String surname, @RequestBody BookCreateUpdateDTO dto) {
-        Author author = authorService.findbySurname(surname);
-        if (author == null) {
-            return ResponseEntity.badRequest().body("Author not found");
-        }
-        
-        Book newBook = new Book(UUID.randomUUID(), dto.getTitle(), dto.getGenre(), author);
-        authorService.addBookToAuthor(author.getId(), newBook);
+
+    @PostMapping("/authors/{author_id}/books")
+    public ResponseEntity<?> addBook(@PathVariable UUID author_id, @RequestBody BookCreateUpdateDTO dto) {
+
+        Book newBook = new Book(UUID.randomUUID(), dto.getTitle(), dto.getGenre(), author_id);
 
         return ResponseEntity.status(201).body(
-                new BookReadDTO(newBook.getId(), newBook.getTitle(), newBook.getGenre(), author.getName() + " " + author.getSurname())
+                new BookReadDTO(newBook.getId(), newBook.getTitle(), newBook.getGenre())
         );
     }
 
