@@ -50,7 +50,17 @@ public class AuthorController {
     public ResponseEntity<AuthorReadDTO> createAuthor(@RequestBody AuthorCreateUpdateDTO dto) {
         Author author = new Author(UUID.randomUUID(), dto.getName(), dto.getSurname());
         authorService.save(author);
-
+        webClient
+        .post()
+        .uri("/internal/authors")
+        .bodyValue(Map.of(
+            "id", author.getId(),
+            "name", author.getName(),
+            "surname", author.getSurname()
+        ))
+        .retrieve()
+        .toBodilessEntity()
+        .block();
         return ResponseEntity.status(201).body(
                 new AuthorReadDTO(author.getId(), author.getName(), author.getSurname())
         );
@@ -81,7 +91,7 @@ public class AuthorController {
             return ResponseEntity.notFound().build();
         }
         UUID id = author.getId();
-        webClient.delete().uri("/api/books/authors/{authorId}", id).retrieve()
+        webClient.delete().uri("/internal/authors/{authorId}", id).retrieve()
         .toBodilessEntity().block();
 
         authorService.deleteById(id);
