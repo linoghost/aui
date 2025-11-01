@@ -2,6 +2,7 @@ package com.example.element_management;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 import org.springframework.core.annotation.Order;
 import java.util.*;
 
@@ -16,17 +17,24 @@ public class DataInitializer implements CommandLineRunner {
 
     public DataInitializer(BookService bookService, WebClient.Builder webClientBuilder) {
         this.bookService = bookService;
-        this.webClient = webClientBuilder.baseUrl("http://localhost:8081/authors").build();
+        this.webClient = webClientBuilder.baseUrl("http://localhost:8081/api/authors").build();
     }
 
     @Override
     public void run(String... args) throws Exception {
-        List<AuthorListDTO> authors = webClient.get()
-                .uri("") // GET http://localhost:8081/authors
+        List<AuthorListDTO> authors;
+        try {
+            authors = webClient.get()
+                .uri("")
                 .retrieve()
                 .bodyToFlux(AuthorListDTO.class)
                 .collectList()
                 .block();
+
+        } catch (WebClientResponseException e) {
+            System.out.println("⚠️ Warning: Could not fetch authors from category service, skipping initialization.");
+            return;
+        }
 
         if (authors == null || authors.isEmpty()) {
             System.out.println("mamy problem, nie ma autorów");

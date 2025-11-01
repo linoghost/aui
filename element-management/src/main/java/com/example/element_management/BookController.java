@@ -25,15 +25,15 @@ public class BookController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("/books/authors/{author_id}")
-    public ResponseEntity<List<BookListDTO>> getBooksByAuthorID(@PathVariable UUID author_id) {
+    @GetMapping("/books/authors/{authorId}")
+    public ResponseEntity<List<BookListDTO>> getBooksByAuthorID(@PathVariable UUID authorId) {
         //
         //  "KONTYNUACJA" funkcji znajduje się w autorze - komunikacja miedzy portami.
         //
         //pathvariable bierze wartość z naszego id i zamienia ją na uuid
         //responseentity jest stricte na restapi zeby bylo nam łatwo zwracac odpowiedzi (np 200 OK i reszta danych,
         //albo błędy. bez tego CHYBA może się wywalić jak coś pójdzie nie tak
-        List<Book> books = bookService.findByAuthorID(author_id);
+        List<Book> books = bookService.findByAuthorId(authorId);
 
         if (books.isEmpty()) {
             return ResponseEntity.noContent().build(); // różnica: autor istnieje, ale bez książek
@@ -46,11 +46,11 @@ public class BookController {
         return ResponseEntity.ok(bookDTOs);
     }
 
-    @PostMapping("/authors/{author_id}/books")
-    public ResponseEntity<?> addBook(@PathVariable UUID author_id, @RequestBody BookCreateUpdateDTO dto) {
+    @PostMapping("/authors/{authorId}/books")
+    public ResponseEntity<?> addBook(@PathVariable UUID authorId, @RequestBody BookCreateUpdateDTO dto) {
 
-        Book newBook = new Book(UUID.randomUUID(), dto.getTitle(), dto.getGenre(), author_id);
-
+        Book newBook = new Book(UUID.randomUUID(), dto.getTitle(), dto.getGenre(), authorId);
+        bookService.save(newBook);
         return ResponseEntity.status(201).body(
                 new BookReadDTO(newBook.getId(), newBook.getTitle(), newBook.getGenre())
         );

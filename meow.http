@@ -1,0 +1,7 @@
+POST http://localhost:8082/api/authors/bf768aa2-f5d9-4e40-98a1-275039178cb1/books
+Content-Type: application/json
+
+{
+  "title": "My New Book",
+  "genre": "Fiction"
+}

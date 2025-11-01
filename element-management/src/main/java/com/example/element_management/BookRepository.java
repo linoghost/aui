@@ -9,6 +9,6 @@ import java.util.UUID;
 public interface BookRepository extends JpaRepository<Book, UUID> {
 
     // metoda do wyszukiwania książek po autorze
-    List<Book> findByAuthorID(UUID author_id);
+    List<Book> findByAuthorId(UUID authorId);
     Book findByTitle(String title);
 }

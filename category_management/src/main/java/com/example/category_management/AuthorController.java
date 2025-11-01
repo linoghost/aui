@@ -94,7 +94,7 @@ public class AuthorController {
         }
 
         List<BookListDTO> books = webClient.get()
-                .uri("/books/authors/{authorId}", author.getId())
+                .uri("/api/books/authors/{authorId}", author.getId())
                 .retrieve()
                 .bodyToFlux(BookListDTO.class)
                 .collectList()
@@ -116,7 +116,7 @@ public class AuthorController {
 
         
         BookReadDTO createdBook = webClient.post()
-                .uri("http://localhost:8082/authors/{authorId}/books", author.getId())
+                .uri("/api/authors/{authorId}/books", author.getId())
                 .bodyValue(dto)
                 .retrieve()
                 .bodyToMono(BookReadDTO.class)

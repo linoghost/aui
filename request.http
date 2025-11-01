@@ -69,6 +69,6 @@ DELETE http://localhost:8082/api/books/It
 
 
 ### DELETE a book by title
-DELETE http://localhost:8080/api/books/My%20New%20Book
+DELETE http://localhost:8082/api/books/My%20New%20Book
 Accept: application/json
 
