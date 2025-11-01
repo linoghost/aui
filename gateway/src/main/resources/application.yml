@@ -1,0 +1,26 @@
+
+server:
+  port: 8080
+
+spring:
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      routes:
+        - id: authors-service
+          uri: http://localhost:8081
+          predicates:
+            - Path=/api/authors/**
+          
+        - id: books-service
+          uri: http://localhost:8082
+          predicates:
+            - Path=/api/books/**
+
+
+# Logowanie dla debugowania
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    reactor.netty: DEBUG
