@@ -44,7 +44,8 @@ Accept: application/json
 ###
 
 # Delete an author
-DELETE http://localhost:8080/api/authors/King
+#DELETE http://localhost:8080/api/authors/King
+#no longer works for surname
 
 ###
 #

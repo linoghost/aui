@@ -8,6 +8,11 @@ import org.springframework.web.reactive.function.client.WebClient;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@CrossOrigin(
+    origins = "http://localhost:4200",
+    methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS}
+)
+
 @RestController
 @RequestMapping("/api/authors") //taki define ścieżki, żeby nie pisać za każdym razem całej
 public class AuthorController {
@@ -84,15 +89,15 @@ public class AuthorController {
     }
 
 
-    @DeleteMapping("/{surname}")
-    public ResponseEntity<Void> deleteAuthor(@PathVariable String surname) {
-        Author author = authorService.findbySurname(surname);
+    @DeleteMapping("/{id}") //ZMIANA bo już nie wpisujemy zapytań z ręki
+    public ResponseEntity<Void> deleteAuthor(@PathVariable UUID id) {
+        Author author = authorService.findById(id);
         if (author == null) {
             return ResponseEntity.notFound().build();
         }
-        UUID id = author.getId();
-        webClient.delete().uri("/internal/authors/{authorId}", id).retrieve()
-        .toBodilessEntity().block();
+        
+        // webClient.delete().uri("/internal/authors/{authorId}", id).retrieve()
+        // .toBodilessEntity().block();
 
         authorService.deleteById(id);
         return ResponseEntity.noContent().build();

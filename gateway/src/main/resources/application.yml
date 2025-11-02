@@ -17,6 +17,15 @@ spring:
           uri: http://localhost:8082
           predicates:
             - Path=/api/books/**
+            
+      corsConfigurations:
+          '[/**]':
+            allowedOrigins: "http://localhost:4200"
+            allowedMethods: "*"
+            allowedHeaders: "*"
+            allowCredentials: true
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_UNIQUE
 
 
 # Logowanie dla debugowania

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CategoryList } from './category-list';
+import { AuthorListComponent } from './author-list';
 
-describe('CategoryList', () => {
-  let component: CategoryList;
-  let fixture: ComponentFixture<CategoryList>;
+describe('AuthorListComponent', () => {
+  let component: AuthorListComponent;
+  let fixture: ComponentFixture<AuthorListComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CategoryList]
+      imports: [AuthorListComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(CategoryList);
+    fixture = TestBed.createComponent(AuthorListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
