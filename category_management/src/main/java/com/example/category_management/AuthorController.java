@@ -91,6 +91,7 @@ public class AuthorController {
 
     @DeleteMapping("/{id}") //ZMIANA bo już nie wpisujemy zapytań z ręki
     public ResponseEntity<Void> deleteAuthor(@PathVariable UUID id) {
+        System.out.println("aaaa");
         Author author = authorService.findById(id);
         if (author == null) {
             return ResponseEntity.notFound().build();
