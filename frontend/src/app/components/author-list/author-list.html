@@ -20,9 +20,19 @@
 <div *ngIf="loading">Loading...</div>
 <ul>
   <li *ngFor="let a of authors">
-    {{ a.fullName }}
-    <button (click)="deleteAuthor(a.id)">🗑️</button>
+    <div *ngIf="editingAuthorId === a.id; else viewMode">
+      <input type="text" [(ngModel)]="editedName" placeholder="First name" />
+      <input type="text" [(ngModel)]="editedSurname" placeholder="Last name" />
+      <button (click)="saveAuthor(a.id)">save</button>
+      <button (click)="cancelEditing()">cancel</button>
+    </div>
+    <ng-template #viewMode>
+      {{ a.fullName }}
+      <button (click)="deleteAuthor(a.id)">delete</button>
+      <button (click)="startEditing(a)">edit</button>
+    </ng-template>
   </li>
 </ul>
+
 
 </div>

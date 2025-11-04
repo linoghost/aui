@@ -21,6 +21,10 @@ export class AuthorListComponent implements OnInit {
     surname: ''
   };
 
+  editingAuthorId: string | null = null;
+  editedName = '';
+  editedSurname = '';
+
   constructor(private authorsService: AuthorsService) { }
 
   ngOnInit(): void {
@@ -64,4 +68,31 @@ export class AuthorListComponent implements OnInit {
       });
     }
   }
+  startEditing(author: Author): void {
+    this.editingAuthorId = author.id;
+    // Rozdzielamy fullName na imię i nazwisko
+    const [first, ...rest] = author.fullName.split(' ');
+    this.editedName = first;
+    this.editedSurname = rest.join(' ');
+  }
+
+  cancelEditing(): void {
+    this.editingAuthorId = null;
+    this.editedName = '';
+    this.editedSurname = '';
+  }
+
+  saveAuthor(id: string): void {
+  this.authorsService.updateAuthor(id, this.editedName, this.editedSurname).subscribe({
+    next: (updatedAuthor) => {
+      const index = this.authors.findIndex(a => a.id === id);
+      if (index > -1) {
+        this.authors[index].fullName = updatedAuthor.fullName;
+      }
+      this.cancelEditing();
+    },
+    error: (err) => console.error('Error updating author', err)
+  });
+}
+
 }

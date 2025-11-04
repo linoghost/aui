@@ -28,4 +28,13 @@ export class AuthorsService {
   return this.http.post<Author>(this.apiUrl, author);
   }
 
+  updateAuthor(id: string, name: string, surname: string): Observable<Author> {
+  return this.http.put<Author>(`${this.apiUrl}/${id}`, {
+    name: name,
+    surname: surname
+  });
+}
+
+
+
 }

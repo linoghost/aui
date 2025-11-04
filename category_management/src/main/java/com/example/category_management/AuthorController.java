@@ -72,9 +72,9 @@ public class AuthorController {
     }
 
 
-    @PutMapping("/{surname}")
-    public ResponseEntity<AuthorReadDTO> updateAuthor(@PathVariable String surname, @RequestBody AuthorCreateUpdateDTO dto) {
-        Author existing = authorService.findbySurname(surname);
+    @PutMapping("/{id}")
+    public ResponseEntity<AuthorReadDTO> updateAuthor(@PathVariable UUID id, @RequestBody AuthorCreateUpdateDTO dto) {
+        Author existing = authorService.findById(id);
         if (existing == null) {
             return ResponseEntity.notFound().build();
         }
