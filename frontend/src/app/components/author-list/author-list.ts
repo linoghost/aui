@@ -1,18 +1,25 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthorsService, Author } from '../../services/authors';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-author-list',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './author-list.html',
   styleUrls: ['./author-list.css']
 })
 export class AuthorListComponent implements OnInit {
 
   authors: Author[] = [];
+  
   loading = false;
+
+  newAuthor = {
+    name: '',
+    surname: ''
+  };
 
   constructor(private authorsService: AuthorsService) { }
 
@@ -32,6 +39,18 @@ export class AuthorListComponent implements OnInit {
         console.error('Error loading authors', err);
         this.loading = false;
       }
+    });
+  }
+  
+  createAuthor(): void {
+    if (!this.newAuthor.name || !this.newAuthor.surname) return;
+
+    this.authorsService.createAuthor(this.newAuthor).subscribe({
+      next: (created) => {
+        this.authors.push(created);
+        this.newAuthor = { name: '', surname: '' }; // reset formu
+      },
+      error: (err) => console.error('Error creating author', err)
     });
   }
 

@@ -97,8 +97,8 @@ public class AuthorController {
             return ResponseEntity.notFound().build();
         }
         
-        // webClient.delete().uri("/internal/authors/{authorId}", id).retrieve()
-        // .toBodilessEntity().block();
+        webClient.delete().uri("/internal/authors/{authorId}", id).retrieve()
+        .toBodilessEntity().block();
 
         authorService.deleteById(id);
         return ResponseEntity.noContent().build();
