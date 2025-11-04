@@ -104,15 +104,15 @@ public class AuthorController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/{surname}/books")
-    public ResponseEntity<?> getBooksByAuthor(@PathVariable String surname){
-        Author author = authorService.findbySurname(surname);
+    @GetMapping("/{id}/books")
+    public ResponseEntity<?> getBooksByAuthor(@PathVariable UUID id){
+        Author author = authorService.findById(id);
         if (author==null){
             return ResponseEntity.notFound().build();
         }
 
         List<BookListDTO> books = webClient.get()
-                .uri("/api/books/authors/{authorId}", author.getId())
+                .uri("/api/books/authors/{authorId}", id)
                 .retrieve()
                 .bodyToFlux(BookListDTO.class)
                 .collectList()

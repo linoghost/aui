@@ -7,6 +7,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
+
+@CrossOrigin(
+    origins = "http://localhost:4200",
+    methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS}
+)
+
 @RestController
 @RequestMapping("/api")
 public class BookController {
@@ -56,13 +62,12 @@ public class BookController {
         );
     }
 
-    @DeleteMapping("/books/{title}")
-    public ResponseEntity<Void> deleteBook(@PathVariable String title) {
-        Book book = bookService.findByTitle(title);
+    @DeleteMapping("/books/{id}")
+    public ResponseEntity<Void> deleteBook(@PathVariable UUID id) {
+        Book book = bookService.findById(id);
         if (book == null) {
             return ResponseEntity.notFound().build();
         }
-        UUID id = book.getId();
         bookService.deleteById(id);
         return ResponseEntity.noContent().build();
     }

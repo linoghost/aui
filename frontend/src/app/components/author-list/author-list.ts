@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { AuthorsService, Author } from '../../services/authors';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-author-list',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './author-list.html',
   styleUrls: ['./author-list.css']
 })

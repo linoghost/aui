@@ -30,6 +30,7 @@
       {{ a.fullName }}
       <button (click)="deleteAuthor(a.id)">delete</button>
       <button (click)="startEditing(a)">edit</button>
+      <a [routerLink]="['/authors', a.id, 'books']">View Details</a>
     </ng-template>
   </li>
 </ul>

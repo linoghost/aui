@@ -1,0 +1,29 @@
+<h2>
+  {{ author?.fullName }}
+  <button (click)="toggleAddForm()">
+    {{ showAddForm ? 'Cancel' : 'add book' }}
+  </button>
+</h2>
+
+<div *ngIf="showAddForm" class="add-form">
+  <h3>Add a New Book</h3>
+  <form (ngSubmit)="addBook()">
+    <label>Title:</label><br>
+    <input type="text" [(ngModel)]="newBook.title" name="title" required><br>
+
+    <label>Genre:</label><br>
+    <input type="text" [(ngModel)]="newBook.genre" name="genre" required><br>
+
+    <button type="submit">Add</button>
+  </form>
+</div>
+
+<hr>
+
+<h3>Books by {{ author?.fullName }}</h3>
+<ul>
+  <li *ngFor="let book of books">
+    {{ book.title }} ({{ book.genre }})
+    <button (click)="deleteBook(book.id)">delete</button>
+  </li>
+</ul>

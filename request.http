@@ -70,7 +70,7 @@ Accept: application/json
 ###
 
 # Add a new book to an author
-POST http://localhost:8080/api/authors/Rowling/books
+POST http://localhost:8080/api/authors/cb2bee33-2770-4aac-8c09-b21e065e36c8/books
 Content-Type: application/json
 
 {
