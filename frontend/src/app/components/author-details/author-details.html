@@ -13,9 +13,16 @@
 
 <h3>Books by {{ author?.fullName }}</h3>
 <div *ngFor="let book of books">
-  <p>{{ book.title }} ({{ book.genre }})</p>
-  <button (click)="startEditing(book)">Edit</button>
-  <button (click)="deleteBook(book.id)">Delete</button>
+   <strong>{{ book.title }}</strong>
+    <button (click)="toggleBookDetails(book.id)">
+      {{ selectedBookId === book.id ? 'Hide details' : 'Show details' }}
+    </button>
+    <button (click)="startEditing(book)">Edit</button>
+    <button (click)="deleteBook(book.id)">Delete</button>
+
+    <div *ngIf="selectedBookId === book.id" class="book-details">
+      <p><strong>Genre:</strong> {{ book.genre }}</p>
+      <p><strong>ID:</strong> {{ book.id }}</p>
 </div>
 
 <!-- Formularz edycji -->

@@ -21,6 +21,7 @@ export class AuthorDetailsComponent implements OnInit {
   editingBook: any = null;
   loading = false;
   id!: string;
+  selectedBookId: string | null = null;
 
 
   constructor(
@@ -43,6 +44,11 @@ export class AuthorDetailsComponent implements OnInit {
   toggleAddForm(): void {
     this.showAddForm = !this.showAddForm;
   }
+  
+  toggleBookDetails(bookId: string): void {
+  this.selectedBookId = this.selectedBookId === bookId ? null : bookId;
+}
+
 
   addBook(): void {
     console.log('g', this.newBook);
