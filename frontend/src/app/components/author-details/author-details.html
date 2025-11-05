@@ -12,9 +12,21 @@
 <hr>
 
 <h3>Books by {{ author?.fullName }}</h3>
-<ul>
-  <li *ngFor="let book of books">
-    {{ book.title }} ({{ book.genre }})
-    <button (click)="deleteBook(book.id)">delete</button>
-  </li>
-</ul>
+<div *ngFor="let book of books">
+  <p>{{ book.title }} ({{ book.genre }})</p>
+  <button (click)="startEditing(book)">Edit</button>
+  <button (click)="deleteBook(book.id)">Delete</button>
+</div>
+
+<!-- Formularz edycji -->
+<div *ngIf="editingBook">
+  <h4>Edit Book</h4>
+  <form (ngSubmit)="updateBook()">
+    <label>Title:</label>
+    <input type="text" [(ngModel)]="editingBook.title" name="editTitle" required><br>
+    <label>Genre:</label>
+    <input type="text" [(ngModel)]="editingBook.genre" name="editGenre" required><br>
+    <button type="submit">Save</button>
+    <button type="button" (click)="cancelEditing()">Cancel</button>
+  </form>
+</div>

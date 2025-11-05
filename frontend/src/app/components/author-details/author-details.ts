@@ -17,53 +17,81 @@ export class AuthorDetailsComponent implements OnInit {
   books: Book[] = [];
   newBook = { title: '', genre: '' };
   showAddForm = false;
-  authorId!: string; // 👈 tu
+  authorId!: string; 
+  editingBook: any = null;
+  loading = false;
+  id!: string;
+
 
   constructor(
     private route: ActivatedRoute,
     private authorService: AuthorsService,
     private booksService: BooksService
+    
   ) {}
 
   ngOnInit(): void {
-    this.authorId = this.route.snapshot.paramMap.get('id')!; // 👈 zapamiętaj id
+    this.authorId = this.route.snapshot.paramMap.get('id')!;
 
     if (this.authorId) {
       this.authorService.getAuthorById(this.authorId).subscribe((a) => (this.author = a));
       this.booksService.getBooksByAuthorId(this.authorId).subscribe((b) => (this.books = b));
     }
   }
+  
 
   toggleAddForm(): void {
     this.showAddForm = !this.showAddForm;
   }
 
   addBook(): void {
-    console.log('🟢 AddBook clicked', this.newBook);
+    console.log('g', this.newBook);
 
     if (!this.newBook.title || !this.newBook.genre) {
-      console.warn('⚠️ Form incomplete');
+      console.warn('nie tak cos');
       return;
     }
 
     if (!this.authorId) {
-      console.error('❌ No author ID');
+      console.error('nie ma id autora');
       return;
     }
 
     this.booksService.addBook(this.authorId, this.newBook).subscribe({
       next: () => {
-        console.log('✅ Book added successfully');
         this.newBook = { title: '', genre: '' };
         this.showAddForm = false;
 
-        // opcjonalnie odśwież listę książek:
         this.booksService.getBooksByAuthorId(this.authorId).subscribe((b) => (this.books = b));
       },
-      error: (err) => console.error('🚨 Error adding book', err),
+      error: (err) => console.error('cos zle poszlo xd', err),
+    });
+  }
+    
+ loadAuthor(): void {
+
+    this.loading = true;
+    this.authorService.getAuthorById(this.id).subscribe({
+      next: (data) => {
+        this.author = data;
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error('Error loading author', err);
+        this.loading = false;
+      }
     });
   }
 
+
+  loadBooks(): void {
+    this.booksService.getBooksByAuthorId(this.id).subscribe({
+      next: (data) => (this.books = data),
+      error: (err) => console.error('Error loading books', err)
+    });
+
+
+  }
 
   deleteBook(id: string): void {
     if (confirm('Delete this book?')) {
@@ -73,4 +101,28 @@ export class AuthorDetailsComponent implements OnInit {
       });
     }
   }
+    startEditing(book: any): void {
+    this.editingBook = { ...book }; // kopia oryginału
+  }
+
+  cancelEditing(): void {
+    this.editingBook = null;
+  }
+
+  updateBook(): void {
+    if (!this.editingBook) return;
+    console.log('Updating book', this.editingBook);
+
+    this.booksService.updateBook(this.editingBook.id, {
+      title: this.editingBook.title,
+      genre: this.editingBook.genre
+    }).subscribe({
+      next: () => {
+        alert('Book updated!');
+        this.loadBooks();
+        this.editingBook = null;
+      },
+      error: (err) => console.error('Error updating book', err)
+    });
+}
 }

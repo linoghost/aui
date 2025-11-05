@@ -19,10 +19,16 @@ export class BooksService {
   }
 
   deleteBook(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    return this.http.delete<void>(`${this.apiUrl}/books/${id}`);
   }
   
   addBook(authorId: string, book: { title: string; genre: string }): Observable<void> {
     return this.http.post<void>(`${this.apiUrl}/books/authors/${authorId}`, book);
   }
+
+  updateBook(bookId: string, updatedBook: { title: string; genre: string }): Observable<void> {
+  return this.http.put<void>(`${this.apiUrl}/books/${bookId}`, updatedBook);
+  }
+
+
 }

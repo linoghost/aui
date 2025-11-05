@@ -88,5 +88,19 @@ public class BookController {
         return ResponseEntity.noContent().build();
     }
 
+    @PutMapping("/books/{bookId}")
+    public ResponseEntity<BookReadDTO> updateBook(@PathVariable UUID bookId, @RequestBody BookCreateUpdateDTO dto) {
+    Book existing = bookService.findById(bookId);
+    if (existing == null) {
+        return ResponseEntity.notFound().build();
+    }
+
+    existing.setTitle(dto.getTitle());
+    existing.setGenre(dto.getGenre());
+    bookService.save(existing);
+
+    return ResponseEntity.ok(new BookReadDTO(existing.getId(), existing.getTitle(), existing.getGenre()));
+    }
+
 
 }
