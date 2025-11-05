@@ -23,6 +23,6 @@ export class BooksService {
   }
   
   addBook(authorId: string, book: { title: string; genre: string }): Observable<void> {
-    return this.http.post<void>(`${this.apiUrl}/authors/${authorId}`, book);
+    return this.http.post<void>(`${this.apiUrl}/books/authors/${authorId}`, book);
   }
 }

@@ -52,7 +52,7 @@ public class BookController {
         return ResponseEntity.ok(bookDTOs);
     }
 
-    @PostMapping("/authors/{authorId}/books")
+    @PostMapping("books/authors/{authorId}")
     public ResponseEntity<?> addBook(@PathVariable UUID authorId, @RequestBody BookCreateUpdateDTO dto) {
 
         Book newBook = new Book(UUID.randomUUID(), dto.getTitle(), dto.getGenre(), authorId);

@@ -13,60 +13,54 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./author-details.css']
 })
 export class AuthorDetailsComponent implements OnInit {
-  id!: string;
   author?: Author;
   books: Book[] = [];
-  loading = false;
-
-  showAddForm = false;
   newBook = { title: '', genre: '' };
+  showAddForm = false;
+  authorId!: string; // 👈 tu
 
   constructor(
     private route: ActivatedRoute,
-    private authorsService: AuthorsService,
+    private authorService: AuthorsService,
     private booksService: BooksService
   ) {}
 
   ngOnInit(): void {
-    this.id = this.route.snapshot.paramMap.get('id')!;
-    this.loadAuthor();
-    this.loadBooks();
+    this.authorId = this.route.snapshot.paramMap.get('id')!; // 👈 zapamiętaj id
+
+    if (this.authorId) {
+      this.authorService.getAuthorById(this.authorId).subscribe((a) => (this.author = a));
+      this.booksService.getBooksByAuthorId(this.authorId).subscribe((b) => (this.books = b));
+    }
   }
 
-  loadAuthor(): void {
-    this.loading = true;
-    this.authorsService.getAuthorById(this.id).subscribe({
-      next: (data) => {
-        this.author = data;
-        this.loading = false;
-      },
-      error: (err) => {
-        console.error('Error loading author', err);
-        this.loading = false;
-      }
-    });
-  }
-
-  loadBooks(): void {
-    this.booksService.getBooksByAuthorId(this.id).subscribe({
-      next: (data) => (this.books = data),
-      error: (err) => console.error('Error loading books', err)
-    });
-  }
-    toggleAddForm(): void {
+  toggleAddForm(): void {
     this.showAddForm = !this.showAddForm;
   }
 
   addBook(): void {
-    if (!this.newBook.title || !this.newBook.genre) return;
+    console.log('🟢 AddBook clicked', this.newBook);
 
-    this.booksService.addBook(this.id, this.newBook).subscribe({
+    if (!this.newBook.title || !this.newBook.genre) {
+      console.warn('⚠️ Form incomplete');
+      return;
+    }
+
+    if (!this.authorId) {
+      console.error('❌ No author ID');
+      return;
+    }
+
+    this.booksService.addBook(this.authorId, this.newBook).subscribe({
       next: () => {
-        this.loadBooks();
+        console.log('✅ Book added successfully');
         this.newBook = { title: '', genre: '' };
         this.showAddForm = false;
+
+        // opcjonalnie odśwież listę książek:
+        this.booksService.getBooksByAuthorId(this.authorId).subscribe((b) => (this.books = b));
       },
-      error: (err) => console.error('Error adding book', err)
+      error: (err) => console.error('🚨 Error adding book', err),
     });
   }
 

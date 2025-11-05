@@ -12,7 +12,8 @@ spring:
           uri: http://localhost:8081
           predicates:
             - Path=/api/authors/**
-          
+
+
         - id: books-service
           uri: http://localhost:8082
           predicates:

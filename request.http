@@ -9,7 +9,15 @@ GET http://localhost:8080/api/authors
 Accept: application/json
 
 ###
+POST http://localhost:8080/api/books/authors/74d2654d-70f1-4a78-89a5-61c59460e0f9
+Content-Type: application/json
 
+{
+  "title": "Msdddfsxk",
+  "genre": "Fiction"
+}
+
+###
 #get author
 GET http://localhost:8080/api/authors/King
 Accept: application/json

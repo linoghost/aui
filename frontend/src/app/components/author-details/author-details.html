@@ -1,22 +1,13 @@
-<h2>
-  {{ author?.fullName }}
-  <button (click)="toggleAddForm()">
-    {{ showAddForm ? 'Cancel' : 'add book' }}
-  </button>
-</h2>
+<button (click)="toggleAddForm()">
+  {{ showAddForm ? 'Cancel' : 'Add Book' }}
+</button>
 
 <div *ngIf="showAddForm" class="add-form">
-  <h3>Add a New Book</h3>
-  <form (ngSubmit)="addBook()">
-    <label>Title:</label><br>
-    <input type="text" [(ngModel)]="newBook.title" name="title" required><br>
-
-    <label>Genre:</label><br>
-    <input type="text" [(ngModel)]="newBook.genre" name="genre" required><br>
-
-    <button type="submit">Add</button>
-  </form>
+  <input type="text" [(ngModel)]="newBook.title" name="title" placeholder="Title" required />
+  <input type="text" [(ngModel)]="newBook.genre" name="genre" placeholder="Genre" required />
+  <button (click)="addBook()">Add</button>
 </div>
+
 
 <hr>
 
