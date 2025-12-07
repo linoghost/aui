@@ -1,6 +1,7 @@
 package com.example.category_management;
 
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -17,10 +18,20 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/authors") //taki define ścieżki, żeby nie pisać za każdym razem całej
 public class AuthorController {
     private final AuthorService authorService;
-    private final WebClient webClient = WebClient.create("http://localhost:8082"); //books
+    private final WebClient webClient; // <--- USUNIĘTE "= WebClient.create(...)"
 
-    public AuthorController(AuthorService authorService){
-        this.authorService=authorService;
+    // --- POPRAWIONY KONSTRUKTOR ---
+    public AuthorController(AuthorService authorService, 
+                            WebClient.Builder webClientBuilder,
+                            @Value("${element.url:http://localhost:8082}") String elementUrl) {
+        
+        this.authorService = authorService;
+        
+        // Logujemy, żebyś widziała w konsoli, z czym się łączy
+        System.out.println("🔗 Configuring WebClient for Element Service at: " + elementUrl);
+        
+        // Budujemy WebClienta używając adresu z Dockera (lub localhosta w IntelliJ)
+        this.webClient = webClientBuilder.baseUrl(elementUrl).build();
     }
 
     @GetMapping
@@ -57,7 +68,7 @@ public class AuthorController {
         authorService.save(author);
         webClient
         .post()
-        .uri("/internal/authors")
+        .uri("/internal/authors") 
         .bodyValue(Map.of(
             "id", author.getId(),
             "name", author.getName(),

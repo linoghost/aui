@@ -10,12 +10,12 @@ export interface Book {
 
 @Injectable({ providedIn: 'root' })
 export class BooksService {
-  private apiUrl = 'http://localhost:8080/api';
+  private apiUrl = '/api';
 
   constructor(private http: HttpClient) {}
 
   getBooksByAuthorId(authorId: string): Observable<Book[]> {
-  return this.http.get<Book[]>(`http://localhost:8080/api/authors/${authorId}/books`);
+  return this.http.get<Book[]>(`/api/authors/${authorId}/books`);
   }
 
   deleteBook(id: string): Observable<void> {

@@ -1,4 +1,5 @@
 package com.example.element_management;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -14,14 +15,22 @@ public class DataInitializer implements CommandLineRunner {
     private final BookService bookService;
     private final WebClient webClient;
 
+    // UWAGA: Przenosimy @Value do argumentu konstruktora, to bezpieczniejsza metoda
+    public DataInitializer(BookService bookService, 
+                           WebClient.Builder webClientBuilder,
+                           @Value("${category.url:http://localhost:8081}") String categoryUrl) {
+        
 
-    public DataInitializer(BookService bookService, WebClient.Builder webClientBuilder) {
+
         this.bookService = bookService;
-        this.webClient = webClientBuilder.baseUrl("http://localhost:8081/api/authors").build();
+        
+        System.out.println("Connecting to Category Service at: " + categoryUrl); // Log dla pewności
+        this.webClient = webClientBuilder.baseUrl(categoryUrl + "/api/authors").build();
     }
 
     @Override
     public void run(String... args) throws Exception {
+       
         List<AuthorListDTO> authors;
         try {
             authors = webClient.get()
@@ -32,7 +41,7 @@ public class DataInitializer implements CommandLineRunner {
                 .block();
 
         } catch (WebClientResponseException e) {
-            System.out.println("⚠️ Warning: Could not fetch authors from category service, skipping initialization.");
+            System.out.println("cos nie tak");
             return;
         }
 

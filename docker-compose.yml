@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+
+  category:
+    build: ./category_management # Ścieżka do folderu z Dockerfile
+    container_name: category-container
+    ports:
+      - "8081:8080" # Mapujemy port 8081 komputera na 8080 kontenera
+    environment:
+      SERVER_PORT: 8080 
+      SPRING_APPLICATION_JSON: '{"element.url": "http://element:8080"}'
+
+  element:
+    build: ./element-management
+    container_name: element-container
+    ports:
+      - "8082:8080" # Mapujemy port 8082 komputera na 8080 kontenera
+    environment:
+      SERVER_PORT: 8080
+      SPRING_APPLICATION_JSON: '{"category.url": "http://category:8080"}'
+    depends_on:
+      - category
+    
+
+  # -------------------------------------------------------
+  # 4. Frontend (Angular + NGINX)
+  # -------------------------------------------------------
+  frontend:
+      build: ./frontend
+      container_name: angular-container
+      ports:
+        - "80:80"  # Dostęp przez http://localhost
+      environment:
+        # UWAGA: Skoro nie mamy Gatewaya w Dockerze, musimy wybrać,
+        # gdzie Frontend ma wysyłać zapytania.
+        # Opcja A: Wskazujemy na Category Service (będą działać autorzy)
+        CATEGORY_URL: http://category:8080
+        ELEMENT_URL: http://element:8080
+        
+        # Opcja B (Jeśli odpalisz Gateway lokalnie w IntelliJ na porcie 8080):
+        # API_URL: http://host.docker.internal:8080/api/
+      depends_on:
+        - category
+        - element
