@@ -5,11 +5,13 @@ import java.util.UUID;
 public class BookListDTO {
     private UUID id;
     private String title;
+    private String genre;
 
     public BookListDTO() {}
-    public BookListDTO(UUID id, String title) {
+    public BookListDTO(UUID id, String title, String genre) {
         this.id = id;
         this.title = title;
+        this.genre = genre;
     }
 
     public UUID getId() {
@@ -27,5 +29,13 @@ public class BookListDTO {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getGenre(){
+        return genre;
+    }
+
+    public void setGenre(String genre){
+        this.genre=genre;
     }
 }

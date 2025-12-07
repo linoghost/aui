@@ -77,7 +77,7 @@ export class AuthorDetailsComponent implements OnInit {
  loadAuthor(): void {
 
     this.loading = true;
-    this.authorService.getAuthorById(this.id).subscribe({
+    this.authorService.getAuthorById(this.authorId).subscribe({
       next: (data) => {
         this.author = data;
         this.loading = false;
@@ -91,7 +91,7 @@ export class AuthorDetailsComponent implements OnInit {
 
 
   loadBooks(): void {
-    this.booksService.getBooksByAuthorId(this.id).subscribe({
+    this.booksService.getBooksByAuthorId(this.authorId).subscribe({
       next: (data) => (this.books = data),
       error: (err) => console.error('Error loading books', err)
     });
@@ -109,6 +109,7 @@ export class AuthorDetailsComponent implements OnInit {
   }
     startEditing(book: any): void {
     this.editingBook = { ...book }; // kopia oryginału
+    console.log('Edytowana książka:', this.editingBook);
   }
 
   cancelEditing(): void {

@@ -32,9 +32,9 @@ public class AuthorController {
     }
 
 
-    @GetMapping("/{surname}")
-    public ResponseEntity<AuthorReadDTO> getAuthor(@PathVariable String surname) { //
-        Author author = authorService.findbySurname(surname);
+    @GetMapping("/{id}")
+    public ResponseEntity<AuthorReadDTO> getAuthor(@PathVariable UUID id) { //
+        Author author = authorService.findById(id);
         if (author == null) {
             return ResponseEntity.notFound().build();
         }

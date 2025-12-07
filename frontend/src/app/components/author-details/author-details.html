@@ -11,9 +11,10 @@
 
 <hr>
 
-<h3>Books by {{ author?.fullName }}</h3>
+<h3>Books by {{ author?.name }} {{ author?.surname }}</h3>
+
 <div *ngFor="let book of books">
-   <strong>{{ book.title }}</strong>
+    <strong>{{ book.title }}</strong>
     <button (click)="toggleBookDetails(book.id)">
       {{ selectedBookId === book.id ? 'Hide details' : 'Show details' }}
     </button>
@@ -23,9 +24,9 @@
     <div *ngIf="selectedBookId === book.id" class="book-details">
       <p><strong>Genre:</strong> {{ book.genre }}</p>
       <p><strong>ID:</strong> {{ book.id }}</p>
-</div>
+    </div>
+</div> <hr>
 
-<!-- Formularz edycji -->
 <div *ngIf="editingBook">
   <h4>Edit Book</h4>
   <form (ngSubmit)="updateBook()">

@@ -27,7 +27,7 @@ public class BookController {
     @GetMapping("/books")
     public List<BookListDTO> getAllBooks() {
         return bookService.findAll().stream()
-                .map(b -> new BookListDTO(b.getId(), b.getTitle()))
+                .map(b -> new BookListDTO(b.getId(), b.getTitle(), b.getGenre()))
                 .collect(Collectors.toList());
     }
 
@@ -46,7 +46,7 @@ public class BookController {
         }
 
         List<BookListDTO> bookDTOs = books.stream()
-                .map(b -> new BookListDTO(b.getId(), b.getTitle()))
+                .map(b -> new BookListDTO(b.getId(), b.getTitle(),b.getGenre()))
                 .toList();
 
         return ResponseEntity.ok(bookDTOs);

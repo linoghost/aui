@@ -5,6 +5,8 @@ import { Observable } from 'rxjs';
 export interface Author {
   id: string;
   fullName: string;
+  name?:string;
+  surname?:string;
 }
 
 @Injectable({
