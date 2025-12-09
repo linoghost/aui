@@ -28,7 +28,7 @@ services:
   # -------------------------------------------------------
   frontend:
       build: ./frontend
-      container_name: angular-container
+      container_name: frontend
       ports:
         - "80:80"  # Dostęp przez http://localhost
       environment:
